@@ -1,116 +1,70 @@
-import { StyleSheet, Text, View ,ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 // import { inputText } from '@/components/app/Input';
-import InputText from './../components/app/Input';
-import Message from './../components/app/message';
+import InputText from "./../components/app/Input";
+import Message from "./../components/app/message";
+import { useState } from "react";
+import { MessageType } from "@/types/Message";
 
 export default function Home() {
-  return (      
-      <View style={styles.content}>
-        <Text style={styles.title}>Legal bot</Text>
+  const [messages, setMessages] = useState<MessageType[]>([
+    { id: Date.now(), texte: "Bonjour comment puis je vous aider?", ia: true },
+  ]);
+  const ajouterMessage = (texte: string[]) => {
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), texte: texte[0], ia: false },
+      { id: Date.now() + 1, texte: texte[1], ia: true },
+    ]);
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.content}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <Text style={styles.title}>Legal bot</Text>
       <ScrollView style={styles.container}>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-          <Message></Message>
-        <InputText></InputText>
+        {messages.map((msg) => (
+          <Message key={msg.id} message={msg} />
+        ))}
       </ScrollView>
-      </View>
+      <InputText onEnvoyer={ajouterMessage}></InputText>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-    width :'100%'
+    width: "100%",
   },
   content: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
   },
-  chat :{
-    flex: 1, // Occupe tout l'espace à l'intérieur du container
-    backgroundColor: 'blue'
+  chat: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    padding: 12,
   },
 });
